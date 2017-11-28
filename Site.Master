@@ -1,0 +1,191 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="jQueryAutocomplete.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        /* Background Color */
+        .l1 {
+	        background-color : #E8EDEE;
+	        border: 1px solid #003087 ;
+	        width: 230px;
+            box-sizing:border-box;
+            color:#696969;
+            padding:2px;
+        }
+        .l {
+            display: inline-block;
+            width: 140px;
+            text-align: right;
+            margin:5px;
+        }
+        .b{
+            font-weight:bold;
+        }
+     
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+
+        </style>
+  
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <script language="javascript"  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>  
+    <script language="javascript"  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script> 
+    <script language="javascript"  type="text/javascript" src="Scripts/Customer.js"></script> 
+ <script type="text/javascript">
+    $(function(){
+      
+        $("#txtCountry").autocomplete({
+       
+            source: function (request, response) {
+                var param = { keyword: $('#txtCountry').val() };
+                $.ajax({
+                    url: "Default.aspx/GetCountryNames",
+                    data: JSON.stringify(param),
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; },
+                    success: function (data) {
+                        response($.map(data.d, function (item) {
+                            return {
+                                value: item
+                            }
+                        }))
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        
+                    }
+                });
+            },
+            select: function (event, ui) {
+            
+                if (ui.item) {
+                    GetCustomerDetails(ui.item.value);
+                }
+            },
+            minLength: 3
+        });
+    
+
+   var s= $("#search_btn")
+   
+  // s.click(function (e) {
+  //     alert('clicked');
+  //    var a = GetCustomer("Neil");
+  //    alert('clicked2');
+  //   e.preventDefault();
+  // });
+    });
+
+     
+
+    </script>
+
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+        
+           
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    
+    <div class="page">
+        <div >
+            
+                <div style="margin:8px; " >
+                    <span style="margin:5px"> <img src="cc.jpg"  height="60px" alt="QA Plus Legacy Database"  /> </span>
+                    <span style="color:black;font-size:26px; position:relative;top:-5px;">QA Plus Legacy Database</span>
+                    <span></span>
+                    <span><a style="float:right" href="/"><img src="bedfordshire.png"  height="60px" alt="bedfordshire"  /> </a> </span>
+                    
+               </div>
+        
+   <div class="menu">
+       <div style="background-color:#3a4f63;">
+        <ul>
+   <li><a href="default.aspx">Home</a></li>
+ <li><asp:Hyperlink ID="Hyperlink1"  href="Placement.aspx" runat="server">Placements</asp:Hyperlink></li>
+ 
+   <li><asp:Hyperlink ID="funding"  href="funding.aspx" runat="server">Funding</asp:Hyperlink></li>
+   <li><a href="invoices.aspx">Invoices</a></li>
+   <li><a href="about.asp">Review</a></li>
+     </ul>
+           </div>
+   </div>
+
+
+ 
+     <div>
+            <!--
+            <div class="loginDisplay">
+                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
+                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ]
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            -->
+           
+        </div>
+          
+
+           
+    
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            <form>
+               
+         <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                 
+                       <Items>
+                        
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="Funding"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="Invoice"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="Event Notes"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="Review"/>
+                    </Items>
+                </asp:Menu>
+        </div>
+             </form>
+</asp:ContentPlaceHolder>
+
+
+
+        </div>
+        
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        
+    </div>
+  
+</body>
+</html>
